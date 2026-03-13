@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스마트 공간력 혁신 체계</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <i class="ri-space-ship-line"></i>
+        <span>스마트 공간력 혁신 체계</span>
+      </div>
+      
+      <!-- Main Menu -->
+      <nav class="menu" id="mainMenu">
+        <a href="#" class="menu-item active" data-target="unit-space">
+          <i class="ri-building-line"></i>
+          <span>우리부대 공간</span>
+        </a>
+        <a href="#" class="menu-item" data-target="generator">
+          <i class="ri-box-3-line"></i>
+          <span>3D 객체 생성</span>
+        </a>
+        <a href="#" class="menu-item" data-target="interior">
+          <i class="ri-magic-line"></i>
+          <span>AI 인테리어</span>
+        </a>
+        <a href="#" class="menu-item" data-target="community">
+          <i class="ri-discuss-line"></i>
+          <span>공간력 커뮤니티</span>
+        </a>
+      </nav>
+
+      <!-- Unit Tree Menu (Hidden by default) -->
+      <nav class="menu hidden" id="treeMenu">
+        <button class="btn-small full-width mb-15" id="backToMainBtn" style="justify-content:center; display:flex;">
+          <i class="ri-arrow-left-line"></i> 메인 메뉴로
+        </button>
+        <div class="tree-group">
+          <div class="tree-header"><i class="ri-map-pin-line"></i> 부대 목록</div>
+          <a href="#" class="tree-item" data-unit="A">
+            <i class="ri-building-2-line"></i>
+            <span>A부대 (1사단)</span>
+          </a>
+          <a href="#" class="tree-item" data-unit="B">
+            <i class="ri-building-4-line"></i>
+            <span>B부대 (2사단)</span>
+          </a>
+        </div>
+      </nav>
+      
+      <div class="theme-switch-wrapper mt-auto">
+        <label class="theme-switch" for="themeToggleBtn">
+          <input type="checkbox" id="themeToggleBtn" />
+          <div class="slider round">
+            <i class="ri-moon-line moon-icon"></i>
+            <i class="ri-sun-line sun-icon"></i>
+          </div>
+        </label>
+        <span class="theme-label">Light / Dark</span>
+      </div>
+
+      <div class="user-profile">
+        <div class="avatar">
+          <i class="ri-user-line"></i>
+        </div>
+        <div class="info">
+          <span class="name">관리자</span>
+          <span class="role">플랜바이테크놀로지스</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- 1. 우리부대 공간 Section -->
+      <section id="unit-space" class="page-section active">
+        
+        <!-- Default Notice view -->
+        <div id="unit-default-view" class="flex-center-panel">
+          <i class="ri-radar-line large-icon blink-icon"></i>
+          <h2>좌측 메뉴에서 부대를 선택해주세요</h2>
+          <p>공간 디지털 트윈 데이터를 불러옵니다.</p>
+        </div>
+
+        <!-- Unit A Flow -->
+        <div id="unit-a-scan-view" class="hidden">
+          <header class="page-header">
+            <h1>A부대 디지털 트윈</h1>
+            <p>2D 도면 스캔 및 3D 공간 전환</p>
+          </header>
+
+          <div id="blueprintScanBtn" class="upload-area">
+            <i class="ri-scanner-line large-icon text-cyan"></i>
+            <h3>A부대 2D 도면 스캔하기</h3>
+            <p>최신 공간 데이터를 로드합니다 (클릭)</p>
+          </div>
+
+          <div id="scanningProgress" class="ai-processing-panel hidden">
+            <h3><i class="ri-radar-fade"></i> 도면 데이터 매칭 중...</h3>
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="scanProgressBar"></div>
+            </div>
+            <ul class="process-steps">
+              <li class="active"><i class="ri-checkbox-circle-line"></i> 위성 좌표 확인</li>
+              <li class="pending" id="scanStep2"><i class="ri-loader-4-line spin"></i> 2D 평면도 렌더링</li>
+              <li class="pending" id="scanStep3"><i class="ri-time-line"></i> 공간 세그멘테이션</li>
+            </ul>
+          </div>
+
+          <!-- The Blueprint Image with Pins -->
+          <div id="blueprintMap" class="blueprint-container hidden">
+            <h3 class="mb-15"><i class="ri-map-2-line"></i> A부대 마스터플랜</h3>
+            <div class="blueprint-wrapper">
+              <!-- Background blueprint placeholder -->
+              <img src="public/2d_scan.jpg" alt="A부대 도면" class="blueprint-img" />
+              
+              <!-- Interactable Markers -->
+              <div class="room-marker" style="top: 40%; left: 35%;" data-room="living1">
+                <i class="ri-map-pin-user-fill"></i>
+                <div class="marker-label">생활관 1</div>
+              </div>
+              <div class="room-marker" style="top: 60%; left: 65%;" data-room="cafe">
+                <i class="ri-restaurant-fill"></i>
+                <div class="marker-label">생활관 2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Room Detail View (Living Room 1) -->
+        <div id="room-detail-view" class="hidden">
+          <header class="page-header flex-between">
+            <div>
+              <h1 id="roomTitle">생활관 1</h1>
+              <p>2D 평면도 및 3D 모델링 상세</p>
+            </div>
+            <button class="btn-small" id="backToMapBtn"><i class="ri-arrow-go-back-line"></i> 도면으로 돌아가기</button>
+          </header>
+
+          <!-- Upload Photos Area -->
+          <div id="roomUploadArea" class="upload-area">
+            <i class="ri-camera-lens-line large-icon text-cyan"></i>
+            <h3>공간 구석구석 촬영한 사진 업로드</h3>
+            <p>다각도에서 찍은 공간 사진들을 드래그 앤 드롭 하세요.</p>
+          </div>
+
+          <!-- Processing Panel -->
+          <div id="roomProcessingPanel" class="ai-processing-panel hidden">
+            <h3><i class="ri-cpu-line"></i> 공간 사진 기반 AI 렌더링 중...</h3>
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="roomProgressBar"></div>
+            </div>
+            <ul class="process-steps">
+              <li class="active" id="roomStep1"><i class="ri-checkbox-circle-line"></i> 사진 분석 및 파노라마 결합</li>
+              <li class="pending" id="roomStep2"><i class="ri-loader-4-line spin"></i> 2D 도면 추출 및 벽 생성</li>
+              <li class="pending" id="roomStep3"><i class="ri-time-line"></i> 3D 객체 인테리어 자동 배치</li>
+            </ul>
+          </div>
+
+          <!-- Result View -->
+          <div id="roomResultView" class="hidden">
+            <div class="success-banner mb-15">
+              <i class="ri-checkbox-circle-fill text-cyan"></i>
+              <span>업로드한 공간 사진을 2D, 3D로 자동 생성했습니다.</span>
+            </div>
+            
+            <div class="split-view">
+              <div class="glass-card flex-1">
+                <h3>2D 공간 도면</h3>
+                <div class="detail-img-wrapper mt-15">
+                  <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=600&q=80" alt="2D Plan" />
+                </div>
+              </div>
+              <div class="glass-card flex-1">
+                <h3>3D 렌더링 뷰 <span class="badge success" style="margin-left: 8px;"><i class="ri-cursor-line"></i> 클릭하여 재배치</span></h3>
+                <div class="detail-img-wrapper mt-15 clickable-view" id="enter3dEditorBtn">
+                  <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&w=600&q=80" alt="3D View" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3D Editor Mockup View -->
+          <div id="roomEditorView" class="hidden mt-15">
+            <header class="page-header flex-between mb-15">
+              <div>
+                <h2>3D 객체 재배치 에디터</h2>
+                <p>생성된 공간의 객체를 마우스로 드래그하여 옮길 수 있습니다.</p>
+              </div>
+              <button class="btn-small" id="exitEditorBtn"><i class="ri-close-line"></i> 에디터 닫기</button>
+            </header>
+            
+            <div class="viewer-container">
+              <div class="viewer-toolbar">
+                <button class="tool-btn active"><i class="ri-drag-move-fill"></i> 이동 모드</button>
+                <button class="tool-btn"><i class="ri-anticlockwise-2-line"></i> 객체 회전</button>
+                <button class="tool-btn"><i class="ri-layout-masonry-line"></i> 새 칸막이</button>
+              </div>
+              
+              <div class="mock-3d-scene" id="mockScene">
+                <!-- Draggable items simulate 3D object moving -->
+                <div class="mock-object bed" draggable="true" style="top:20%; left:30%;">
+                  <i class="ri-hotel-bed-line"></i> 개인 침대 B
+                  <div class="tag tooltip">관물대 일체형</div>
+                </div>
+                <div class="mock-object bed" draggable="true" style="top:20%; left:60%;">
+                  <i class="ri-hotel-bed-line"></i> 개인 침대 A
+                </div>
+                <div class="mock-object desk" draggable="true" style="top:60%; left:40%;">
+                  <i class="ri-macbook-line"></i> 공용 데스크
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 2. 3D 객체 생성 Section -->
+      <section id="generator" class="page-section hidden">
+        <header class="page-header">
+          <h1>3D 객체 생성</h1>
+          <p>가구 등 객체 사진을 업로드하면 3D 모델로 자동 변환해 줍니다.</p>
+        </header>
+        
+        <div class="split-view" style="align-items: flex-start;">
+          <div class="flex-1">
+            <h3 class="mb-15">새로운 객체 추가</h3>
+            <div class="upload-area" id="objectUploadArea">
+              <i class="ri-upload-cloud-2-line large-icon"></i>
+              <h3>객체 사진 업로드 (JPG, PNG)</h3>
+              <p>Drag & Drop 또는 클릭하여 파일 선택</p>
+            </div>
+            
+            <div class="ai-processing-panel hidden mt-15" id="objectProcessingPanel">
+              <h3><i class="ri-cpu-line"></i> 3D 객체 생성 중...</h3>
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="objProgressBar"></div>
+              </div>
+              <ul class="process-steps">
+                <li class="active" id="objStep1"><i class="ri-checkbox-circle-line"></i> 이미지 분석 성공</li>
+                <li class="pending" id="objStep2"><i class="ri-loader-4-line spin"></i> 메쉬 생성 및 텍스처링</li>
+                <li class="pending" id="objStep3"><i class="ri-time-line"></i> 3D 모델 완성</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="glass-card flex-1">
+            <h3>내 3D 객체 보관함</h3>
+            <div class="inventory-grid mt-15">
+              <div class="inventory-item">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&w=300&q=80');"></div>
+                <div class="info-box">
+                  <span class="name">군용 의자 A</span>
+                  <span class="badge success">최적화 완료</span>
+                </div>
+              </div>
+              <div class="inventory-item">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=300&q=80');"></div>
+                <div class="info-box">
+                  <span class="name">공용 데스크</span>
+                  <span class="badge success">최적화 완료</span>
+                </div>
+              </div>
+              <div class="inventory-item">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=300&q=80');"></div>
+                <div class="info-box">
+                  <span class="name">개인 침대 모듈</span>
+                  <span class="badge success">에디터 사용 가능</span>
+                </div>
+              </div>
+              <div class="inventory-item">
+                <div class="img-box" style="background-image: url('https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?auto=format&fit=crop&w=300&q=80');"></div>
+                <div class="info-box">
+                  <span class="name">관물대 세트</span>
+                  <span class="badge success">에디터 사용 가능</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. AI 인테리어 Section -->
+      <section id="interior" class="page-section hidden">
+        <header class="page-header">
+          <h1>AI 인테리어</h1>
+          <p>우리부대 공간에서 불러온 데이터를 바탕으로 AI 인테리어를 적용합니다.</p>
+        </header>
+
+        <div class="interior-grid">
+          <div class="glass-card">
+            <h3>AI 스타일 추천</h3>
+            <div class="ai-gallery">
+              <div class="gallery-item selected">
+                <div class="img-mock style-modern"></div>
+                <span>Modern Military</span>
+              </div>
+              <div class="gallery-item">
+                <div class="img-mock style-wood"></div>
+                <span>Comfort Wood</span>
+              </div>
+            </div>
+            <button class="btn-primary full-width mt-15"><i class="ri-magic-line"></i> 클릭하여 적용해보기</button>
+          </div>
+
+          <div class="glass-card">
+            <h3>예상 소요 예산 (국방군사시설 기준)</h3>
+            <div class="estimate-table">
+              <div class="row header">
+                <div class="cell">항목</div>
+                <div class="cell">비고</div>
+                <div class="cell">합계</div>
+              </div>
+              <div class="row">
+                <div class="cell">개인 침대 모듈</div>
+                <div class="cell">8개</div>
+                <div class="cell">3,600,000원</div>
+              </div>
+              <div class="row">
+                <div class="cell">바닥 / 도장재</div>
+                <div class="cell">친환경</div>
+                <div class="cell">1,800,000원</div>
+              </div>
+              <div class="row total">
+                <div class="cell span-2">총 예상 공사비</div>
+                <div class="cell highlight">5,400,000원</div>
+              </div>
+            </div>
+            <p class="reference-link">
+              <i class="ri-link"></i> <a href="#" target="_blank">건축 바닥면적 기준 (2025 개정판) 연동됨</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Community Section -->
+      <section id="community" class="page-section hidden">
+        <header class="page-header">
+          <h1>공간력 커뮤니티</h1>
+          <p>부대 공간 인테리어 및 공간력 혁신 사업에 대한 다양한 의견을 나누는 소통 공간입니다.</p>
+        </header>
+
+        <div class="glass-card full-width">
+          <div class="community-header flex-between mb-15">
+            <h3>최근 논의 목록</h3>
+            <button class="btn-primary" style="padding: 8px 16px;"><i class="ri-pencil-line"></i> 의견 작성</button>
+          </div>
+          <div class="feed-list enhanced">
+            <div class="feed-item">
+              <div class="feed-header flex-between">
+                <div class="feed-author"><i class="ri-user-smile-line"></i> 김병장 (A부대)</div>
+                <span class="badge success">아이디어 제안</span>
+              </div>
+              <div class="feed-content mt-10">
+                <h4>💡 생활관 1 리모델링 제안서 제출합니다.</h4>
+                <p>AI가 추천한 인테리어 A안을 기초로 가구를 재배치하고 개인 공간을 분리해봤습니다.</p>
+                <div class="feed-images">
+                  <div class="feed-img" style="background-image: url('https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?auto=format&fit=crop&w=800&q=80');"></div>
+                  <div class="feed-img" style="background-image: url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=800&q=80');"></div>
+                </div>
+              </div>
+              <div class="feed-action mt-10" style="display:flex; gap: 8px;">
+                <button class="btn-icon text-cyan"><i class="ri-thumb-up-fill"></i> 124</button>
+                <button class="btn-icon"><i class="ri-chat-3-line"></i> 15</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
