@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const floor = item.getAttribute('data-floor');
 
       if (floor) {
+        currentFloor = floor;
         unitDefaultView.classList.add('hidden');
         roomDetailView.classList.add('hidden');
         unitAScanView.classList.remove('hidden');
@@ -151,6 +152,20 @@ document.addEventListener('DOMContentLoaded', () => {
           if (bpImg) bpImg.src = currentScanImageSrc;
         }, 800);
       }, 3500);
+    });
+  }
+
+  // 3D Convert Logic
+  const convert3dBtn = document.getElementById('convert3dBtn');
+  if (convert3dBtn) {
+    convert3dBtn.addEventListener('click', () => {
+      if (blueprintMap) {
+        const bpImg = blueprintMap.querySelector('.blueprint-img');
+        if (bpImg) {
+          if (currentFloor === '1') bpImg.src = 'public/A_main_1F_3D.jpg';
+          if (currentFloor === '2') bpImg.src = 'public/A_main_2F_3D.jpg';
+        }
+      }
     });
   }
 
