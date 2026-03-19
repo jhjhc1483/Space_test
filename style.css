@@ -794,3 +794,27 @@ input:checked + .slider:before { transform: translateX(26px); }
 @media (max-width: 768px) {
   .split-view { flex-direction: column; }
 }
+
+/* Tree Menu Extras */
+.tree-children {
+  margin-left: 24px;
+  border-left: 1px dashed var(--border-glass);
+  padding-left: 8px;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tree-item.child {
+  font-size: 14px;
+}
+.tree-item.grandchild {
+  font-size: 13px;
+  margin-left: 12px;
+}
+.arrow-icon {
+  transition: transform 0.3s ease;
+}
+.tree-item.open .arrow-icon {
+  transform: rotate(180deg);
+}

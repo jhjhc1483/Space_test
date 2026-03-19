@@ -66,23 +66,53 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Global variable to store current floor image
+  let currentScanImageSrc = 'public/2d_scan.jpg';
+
+  // Toggle tree children
+  const hasChildrenItems = document.querySelectorAll('.has-children');
+  hasChildrenItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      item.classList.toggle('open');
+      const childrenContainer = item.nextElementSibling;
+      if (childrenContainer && childrenContainer.classList.contains('tree-children')) {
+        childrenContainer.classList.toggle('hidden');
+      }
+    });
+  });
+
   treeItems.forEach(item => {
     item.addEventListener('click', (e) => {
+      if (item.classList.contains('has-children') || (item.classList.contains('child') && !item.classList.contains('floor-item'))) {
+        return; // Handled by toggle logic
+      }
+      
       e.preventDefault();
       treeItems.forEach(t => t.classList.remove('active'));
       item.classList.add('active');
 
       const unit = item.getAttribute('data-unit');
-      if (unit === 'A') {
+      const floor = item.getAttribute('data-floor');
+
+      if (floor) {
         unitDefaultView.classList.add('hidden');
         roomDetailView.classList.add('hidden');
         unitAScanView.classList.remove('hidden');
+
+        // Update target image src
+        if (floor === '1') currentScanImageSrc = 'public/A_main_1F.jpg';
+        if (floor === '2') currentScanImageSrc = 'public/A_main_2F.jpg';
+
+        // Update Scan title
+        const mapTitle = unitAScanView.querySelector('h3');
+        if (mapTitle) mapTitle.innerHTML = `<i class="ri-map-2-line"></i> A부대 분청 ${floor}층 전개도`;
 
         // Reset scan state
         if (blueprintScanBtn) blueprintScanBtn.classList.remove('hidden');
         if (scanningProgress) scanningProgress.classList.add('hidden');
         if (blueprintMap) blueprintMap.classList.add('hidden');
-      } else {
+      } else if (unit === 'B') {
         alert('B부대는 접근이 제한된 구역입니다.');
       }
     });
@@ -116,6 +146,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
           scanningProgress.classList.add('hidden');
           blueprintMap.classList.remove('hidden');
+          
+          const bpImg = blueprintMap.querySelector('.blueprint-img');
+          if (bpImg) bpImg.src = currentScanImageSrc;
         }, 800);
       }, 3500);
     });
